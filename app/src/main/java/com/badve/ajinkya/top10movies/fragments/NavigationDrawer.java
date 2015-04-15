@@ -95,7 +95,7 @@ public class NavigationDrawer extends android.support.v4.app.Fragment {
             public void run() {
                 mDrawerToggle.syncState();
             }
-        }); 
+        });
 
     }
     public static void saveToPrefrences(Context context,String prefrenceName,String prefrenceValue){
