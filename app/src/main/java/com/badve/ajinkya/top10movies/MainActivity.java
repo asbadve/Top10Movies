@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.app.ToolbarActionBar;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 
 import com.badve.ajinkya.top10movies.fragments.FragmentSearch;
 import com.badve.ajinkya.top10movies.fragments.FragmentUpcomming;
+import com.badve.ajinkya.top10movies.fragments.NavigationDrawer;
 import com.badve.ajinkya.top10movies.fragments.fragmentBoxoffice;
 import com.badve.ajinkya.top10movies.view.view.SlidingTabLayout;
 
@@ -30,9 +32,15 @@ public class MainActivity extends ActionBarActivity implements ToolbarActionBar.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        //
+
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        NavigationDrawer  navigationDrawer = (NavigationDrawer) getSupportFragmentManager().findFragmentById(R.id.navDrawer);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        navigationDrawer.setUp(R.id.navDrawer,(DrawerLayout)findViewById(R.id.drawerLayout),toolbar);
 
         mViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(3);

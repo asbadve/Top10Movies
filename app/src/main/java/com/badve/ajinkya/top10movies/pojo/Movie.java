@@ -55,6 +55,19 @@ public class Movie implements Parcelable {
         urlSimilar = input.readString();
     }
 
+    /***
+     *
+     * @param id Integer
+     * @param title String
+     * @param releaseDateTheater Date
+     * @param audienceScore Integer
+     * @param synopsis String
+     * @param urlThumbnail String
+     * @param urlSelf String
+     * @param urlCast String
+     * @param urlReviews String
+     * @param urlSimilar String
+     */
     public Movie(long id,
                  String title,
                  Date releaseDateTheater,

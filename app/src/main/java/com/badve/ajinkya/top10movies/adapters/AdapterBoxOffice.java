@@ -4,6 +4,7 @@ package com.badve.ajinkya.top10movies.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -28,7 +29,7 @@ import network.VolleySingleton;
 /**
  * Created by Ajinkya on 29-03-2015.
  */
-public class AdapterBoxOffice extends RecyclerView.Adapter<AdapterBoxOffice.ViewHolderBoxOffice> {
+public class AdapterBoxOffice extends RecyclerView.Adapter<AdapterBoxOffice.ViewHolderBoxOffice> implements ViewGroup.OnTouchListener {
 
     //contains the list of movies
     private ArrayList<Movie> mListMovies = new ArrayList<>();
@@ -53,7 +54,7 @@ public class AdapterBoxOffice extends RecyclerView.Adapter<AdapterBoxOffice.View
 
     @Override
     public ViewHolderBoxOffice onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.boxoffice_recycle_view, parent, false);
+        View view = mInflater.inflate(R.layout.card_row, parent, false);
         ViewHolderBoxOffice viewHolder = new ViewHolderBoxOffice(view);
         return viewHolder;
     }
@@ -109,6 +110,31 @@ public class AdapterBoxOffice extends RecyclerView.Adapter<AdapterBoxOffice.View
     public int getItemCount() {
         return mListMovies.size();
     }
+
+    public void add(Movie movie, int position) {
+        mListMovies.add(position, movie);
+        notifyItemInserted(position);
+    }
+
+    public void remove(int position) {
+        mListMovies.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    /**
+     * Called when a touch event is dispatched to a view. This allows listeners to
+     * get a chance to respond before the target view.
+     *
+     * @param v     The view the touch event has been dispatched to.
+     * @param event The MotionEvent object containing full information about
+     *              the event.
+     * @return True if the listener has consumed the event, false otherwise.
+     */
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
+
 
     static class ViewHolderBoxOffice extends RecyclerView.ViewHolder {
 

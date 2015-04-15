@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +23,11 @@ import com.badve.ajinkya.top10movies.adapters.AdapterBoxOffice;
 import com.badve.ajinkya.top10movies.extras.Keys;
 import com.badve.ajinkya.top10movies.logging.L;
 import com.badve.ajinkya.top10movies.pojo.Movie;
+import com.hudomju.swipe.OnItemClickListener;
+import com.hudomju.swipe.SwipeToDismissTouchListener;
+import com.hudomju.swipe.SwipeableItemClickListener;
+import com.hudomju.swipe.adapter.RecyclerViewAdapter;
+import com.hudomju.swipe.adapter.ViewAdapter;
 
 import static com.badve.ajinkya.top10movies.extras.Keys.EndpointBoxOffice.*;
 
@@ -83,6 +90,12 @@ public class fragmentBoxoffice extends Fragment {
     public fragmentBoxoffice() {
         // Required empty public constructor
     }
+
+    /**
+     * SwipeDismiss callback
+     *
+     * Remove items, and show undobar
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -154,12 +167,47 @@ public class fragmentBoxoffice extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_boxoffice, container, false);
+
+
         recyclerViewBoxOfficeMovies = (RecyclerView)view.findViewById(R.id.recyclerViewBoxOfficeMovies);
         recyclerViewBoxOfficeMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterBoxOffice = new AdapterBoxOffice(getActivity());
         recyclerViewBoxOfficeMovies.setAdapter(adapterBoxOffice);
         movieList =  addMovieList();
         adapterBoxOffice.setMovies(movieList);
+
+        final SwipeToDismissTouchListener touchListener =
+                new SwipeToDismissTouchListener(
+                        new RecyclerViewAdapter(recyclerViewBoxOfficeMovies),
+                        new SwipeToDismissTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int i) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ViewAdapter viewAdapter, int i) {
+                                adapterBoxOffice.remove(i);
+                            }
+                        });
+
+        recyclerViewBoxOfficeMovies.setOnTouchListener(touchListener);
+
+        recyclerViewBoxOfficeMovies.setOnScrollListener((RecyclerView.OnScrollListener) touchListener.makeScrollListener());
+
+        recyclerViewBoxOfficeMovies.addOnItemTouchListener(new SwipeableItemClickListener(getActivity().getApplicationContext(), new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
+                if (view.getId() == R.id.txt_delete) {
+                    touchListener.processPendingDismisses();
+                } else if (view.getId() == R.id.txt_undo) {
+                    touchListener.undoPendingDismiss();
+                } else { // R.id.txt_data
+                    Toast.makeText(getActivity().getApplicationContext(), "Position " + i, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }));
+
         //sendJasonRequest();
         return view;
 
@@ -205,8 +253,10 @@ public class fragmentBoxoffice extends Fragment {
             Movie movie = new Movie(123,"Hera Pheri",date,23,"This is synopsis","URL","urlSelf","urlCast","BEst movie ever seen","Url similar");
             listMovie.add(movie);
         }
-
-
+        Movie movie = new Movie(123,"aera Pheri",date,23,"This is synopsis","URL","urlSelf","urlCast","BEst movie ever seen","Url similar");
+        Movie movie2 = new Movie(123,"rera Pheri",date,23,"This is synopsis","URL","urlSelf","urlCast","BEst movie ever seen","Url similar");
+        listMovie.add(movie);
+        listMovie.add(movie2);
         return listMovie;
     }
 
