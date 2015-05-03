@@ -24,7 +24,7 @@ import com.badve.ajinkya.top10movies.view.view.SlidingTabLayout;
 
 public class MainActivity extends ActionBarActivity implements ToolbarActionBar.TabListener{
     Toolbar toolbar;
-    ViewPager mViewPager;
+    ViewPager mViewPager;//TODO implement the library https://github.com/asbadve/MaterialViewPager
     PagerAdapter pagerAdapter;
     private SlidingTabLayout mSlidingTabLayout;
 
